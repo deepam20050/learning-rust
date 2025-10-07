@@ -1,3 +1,5 @@
+// this only works if the underlying fields implement
+// the Copy trait
 #[derive(Copy, Clone)]
 struct Label {
     number: u32,
