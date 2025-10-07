@@ -1,3 +1,5 @@
+use core::f64;
+
 fn main() {
     let x = b'A';
     let y = 65;
@@ -8,6 +10,11 @@ fn main() {
     println!("{}", (-4i32).abs());
 
     assert_eq!(10_u8.checked_add(20), Some(30));
+
+    // Converting from floating to integer results in truncation
+    // assert_eq!(11.52_f32 as u32, 10u32);
+
+    println!("{}", f64::consts::PI);
 
     let mut i: i32 = 1;
     loop {
