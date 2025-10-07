@@ -14,6 +14,9 @@ fn main() {
     // Converting from floating to integer results in truncation
     // assert_eq!(11.52_f32 as u32, 10u32);
 
+    // rust doesn't implicitly convert u32 to u64
+    // we'd need to explicitly mention any such conversion
+
     println!("{}", f64::consts::PI);
 
     let mut i: i32 = 1;
