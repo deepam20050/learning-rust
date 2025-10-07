@@ -18,10 +18,28 @@ fn main() {
     // we'd need to explicitly mention any such conversion
 
     println!("{}", f64::consts::PI);
+    
+    // implicit conversions of strings/integers etc to bool
+    // are not allowed in rust unlike C/C++/Python
+    assert_eq!(false as u64, 0);
+    assert_eq!(true as u64, 1);    
+
+    // String represents its text as a sequence of UTF-8 bytes
+    // not as an array of characters
+
+    let text = "I see the eigenvalue in thine eye";
+    let (head, tail) = text.split_at(21);
+    assert_eq!(head, "I see the eigenvalue ");
+    assert_eq!(tail, "in thine eye");
+
+    // this is a single element tuple
+    // the last `,` is necessary
+    let single_element_tuple = ("lonely hearts", )
 
     let mut i: i32 = 1;
     loop {
         i = i.checked_mul(10).expect("Multiplication overflowed");
     }
+
 
 }
