@@ -1,0 +1,2 @@
+- If you have a variable x, then reference to x must not outlive x itself
+- Lifetime of anything stored in a reference r must cover atleast the range from initialization of r to the last use of r
