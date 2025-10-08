@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 type Table = HashMap<String, Vec<String>>;
 
-fn show(table: Table) {
+fn show(table: &Table) {
     for (artist, works) in table {
         println!("works by {}", artist);
         for work in works {
@@ -23,12 +23,12 @@ fn main() {
                     vec!["Perseus with the head of Medusa".to_string(),
                     "a salt cellar".to_string()]);
 
-    show(table);
+    show(&table);
     /*
         after caling show(table), show() takes the ownership
         of table and so table is destroyed;
      */
 
-    // assert_eq!(table["Gesualdo"][0], "many madrigals");
+    assert_eq!(table["Gesualdo"][0], "many madrigals");
     // this fails since table has been destroyed
 }
