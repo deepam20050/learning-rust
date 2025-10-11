@@ -3,11 +3,19 @@
 #[derive(Debug)]
 struct CubeStat {
     id: u64,
+    mailbox: Mailbox
 }
 
 #[derive(Debug)]
 enum StatusMessage {
     Ok,
+}
+
+type Message = String;
+
+#[derive(Debug)]
+struct Mailbox {
+    messages: Vec<Message>,
 }
 
 fn check_status(sat_id: CubeStat) -> CubeStat {
