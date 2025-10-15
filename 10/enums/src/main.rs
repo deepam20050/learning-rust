@@ -6,6 +6,7 @@
 
 use std::cmp::Ordering;
 use std::collections::HashMap;
+use std::fmt::format;
 use std::mem::size_of;
 
 fn compare(n: i32, m: i32) -> Ordering {
@@ -106,6 +107,14 @@ struct TreeNode<T> {
     right: BinaryTree<T>,
 }
 
+fn rough_time_to_english(rt: RoughTime) -> String {
+    match rt {
+        RoughTime::InThePast(units, count) => format!("{} {} ago", count, units.plural()),
+        RoughTime::JustNow => format!("just now"),
+        RoughTime::InTheFuture(units, counts) => format!("{} {} from now", counts, units.plural()),
+    }
+}
+
 fn main() {
     assert_eq!(HttpStatus::Ok as i32, 200);
     assert_eq!(size_of::<HttpStatus>(), 2);
@@ -136,6 +145,8 @@ fn main() {
         left: BinaryTree::Empty,
         right: BinaryTree::Empty,
     }));
-    
+
+    let three_hours_from_now_english = rough_time_to_english(three_hours_from_now);
+    println!("{}", three_hours_from_now_english);
     
 }
