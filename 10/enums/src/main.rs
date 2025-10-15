@@ -107,6 +107,29 @@ struct TreeNode<T> {
     right: BinaryTree<T>,
 }
 
+impl<T: Ord> BinaryTree<T> {
+    fn add(&mut self, value: T) {
+        match *self {
+            BinaryTree::Empty => {
+                *self = BinaryTree::NonEmpty(
+                    Box::new(TreeNode {
+                        element: value,
+                        left: BinaryTree::Empty,
+                        right: BinaryTree::Empty,
+                    })
+                )
+            }
+            BinaryTree::NonEmpty(ref mut node) => {
+                if value <= node.element {
+                    node.left.add(value);
+                } else {
+                    node.right.add(value);
+                }
+            }
+        }
+    }
+}
+
 fn rough_time_to_english(rt: RoughTime) -> String {
     match rt {
         RoughTime::InThePast(units, count) => format!("{} {} ago", count, units.plural()),
@@ -135,27 +158,52 @@ struct Account {
 
 fn random_account_match(account: Account) {
     match account {
-        Account {name, language, .. } => println!("Heyy!"),
-        _ => println!("Some random"), 
+        Account { name, language, .. } => println!("Heyy!"),
+        _ => println!("Some random"),
     }
 }
 
 fn greet_people(names: &[&str]) {
-    match names  {
+    match names {
         [] => {
             println!("hello, nobody")
-        },
+        }
         [a] => {
             println!("hello, {}", a)
-        },
+        }
         [a, b] => {
             println!("hello, {} and {}", a, b)
-        },
+        }
         [a, .., b] => {
             println!("hello everyone from {} to {}", a, b)
         }
     }
 }
+
+static ONE: i32 = 1;
+static TWO: i32 = 2;
+
+fn match_guards(x: i32) {
+    match x {
+        // this is a match guard
+        y if y == ONE => {
+            println!("Yay one!")
+        }
+        y if y == TWO => {
+            println!("twooo!")
+        }
+        _ => {
+            println!("Blehh")
+        }
+    }
+}
+
+/*
+ * use the `x @ pattern` for matching exactly like the given pattern
+ * but on success instead of creating varaibles for parts of
+ * unmatched value, it creates a single variable x and moves or copies
+ * the whole value into it.
+ */
 
 fn main() {
     assert_eq!(HttpStatus::Ok as i32, 200);
@@ -190,4 +238,12 @@ fn main() {
 
     let three_hours_from_now_english = rough_time_to_english(three_hours_from_now);
     println!("{}", three_hours_from_now_english);
+
+    match_guards(5);
+    match_guards(1);
+    match_guards(2);
+
+    let mut tree = BinaryTree::Empty;
+    tree.add("Mercury");
+    tree.add("Venus");
 }
