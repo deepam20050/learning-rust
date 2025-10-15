@@ -115,6 +115,48 @@ fn rough_time_to_english(rt: RoughTime) -> String {
     }
 }
 
+fn describe_point(x: i32, y: i32) -> &'static str {
+    use std::cmp::Ordering::*;
+    match (x.cmp(&0), y.cmp(&0)) {
+        (Equal, Equal) => "at the origin",
+        (_, Equal) => "on the x axis",
+        (Equal, _) => "on the y axis",
+        (Greater, Greater) => "in the first quadrant",
+        (Less, Greater) => "in the second quadrant",
+        _ => "somewhere else",
+    }
+}
+
+struct Account {
+    name: String,
+    balance: u64,
+    language: String,
+}
+
+fn random_account_match(account: Account) {
+    match account {
+        Account {name, language, .. } => println!("Heyy!"),
+        _ => println!("Some random"), 
+    }
+}
+
+fn greet_people(names: &[&str]) {
+    match names  {
+        [] => {
+            println!("hello, nobody")
+        },
+        [a] => {
+            println!("hello, {}", a)
+        },
+        [a, b] => {
+            println!("hello, {} and {}", a, b)
+        },
+        [a, .., b] => {
+            println!("hello everyone from {} to {}", a, b)
+        }
+    }
+}
+
 fn main() {
     assert_eq!(HttpStatus::Ok as i32, 200);
     assert_eq!(size_of::<HttpStatus>(), 2);
@@ -148,5 +190,4 @@ fn main() {
 
     let three_hours_from_now_english = rough_time_to_english(three_hours_from_now);
     println!("{}", three_hours_from_now_english);
-    
 }
