@@ -58,6 +58,13 @@ impl Broom {
     }
 }
 
+// generic traits
+pub trait Mul<RHS> {
+    type Output;
+    
+    fn mul(self, rhs: RHS) -> Self::Output;
+}
+
 fn main() {
     println!("Hello, world!");
 }
