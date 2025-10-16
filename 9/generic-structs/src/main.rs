@@ -49,7 +49,7 @@ fn find_extrema<'s>(slice: &'s [i32]) -> Extrema<'s> {
         if slice[i] < *least {
             least = &slice[i];
         }
-        if (slice[i] > *greatest) {
+        if slice[i] > *greatest {
             greatest = &slice[i];
         }
     }
