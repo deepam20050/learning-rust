@@ -91,10 +91,31 @@ impl Queue {
     pub fn is_empty(&self) -> bool {
         self.older.is_empty() && self.younger.is_empty()
     }
-    
+
     pub fn split(self) -> (Vec<char>, Vec<char>) {
         (self.older, self.younger)
     }
+
+    // type associated functions
+    // these don't take a self
+    pub fn new() -> Queue {
+        Queue {
+            older: Vec::new(),
+            younger: Vec::new(),
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct Vector2 {
+    x: f32,
+    y: f32,
+}
+
+impl Vector2 {
+    // associated consts
+    const ZERO: Vector2 = Vector2 { x: 0.0, y: 0.0 };
+    const UNIT: Vector2 = Vector2 { x: 1.0, y: 0.0 };
 }
 
 fn main() {
@@ -140,18 +161,29 @@ fn main() {
     {
         let mut q = Queue {
             older: Vec::new(),
-            younger: Vec::new()
+            younger: Vec::new(),
         };
-        
+
         q.push('P');
         q.push('D');
         assert_eq!(q.pop(), Some('P'));
         q.push('X');
-        
+
         let (older, younger) = q.split();
         // println!("{}", q.is_empty());
         // q cannot be used since it has been moved
         assert_eq!(older, vec!['D']);
         assert_eq!(younger, vec!['X']);
+    }
+    {
+        let mut q = Queue::new();
+        q.push('*');
+
+        let mut bq = Box::new(Queue::new());
+        bq.push('b');
+    }
+    {
+        let scaled = Vector2::UNIT;
+        println!("{:?}", scaled);
     }
 }
