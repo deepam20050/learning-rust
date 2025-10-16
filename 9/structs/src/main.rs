@@ -55,7 +55,7 @@ struct Bounds(usize, usize);
 /*
  * Individual elements of a tuple-like struct maybe public or not
  */
- 
+
 // newtypes - structs with a single component that you define
 // to get a stricter type checking
 struct Ascii(Vec<u8>);
@@ -63,6 +63,39 @@ struct Ascii(Vec<u8>);
 // unit-like structs
 // no memory allocation or machine code is generated
 struct Onesuch;
+
+pub struct Queue {
+    older: Vec<char>,
+    younger: Vec<char>,
+}
+
+impl Queue {
+    pub fn push(&mut self, c: char) {
+        self.younger.push(c);
+    }
+
+    pub fn pop(&mut self) -> Option<char> {
+        if self.older.is_empty() {
+            if (self.younger.is_empty()) {
+                return None;
+            }
+            use std::mem::swap;
+            swap(&mut self.older, &mut self.younger);
+            self.older.reverse();
+        }
+        self.older.pop()
+    }
+}
+
+impl Queue {
+    pub fn is_empty(&self) -> bool {
+        self.older.is_empty() && self.younger.is_empty()
+    }
+    
+    pub fn split(self) -> (Vec<char>, Vec<char>) {
+        (self.older, self.younger)
+    }
+}
 
 fn main() {
     let width = 1024;
@@ -88,6 +121,37 @@ fn main() {
 
     let image_bounds = Bounds(1024, 768);
     assert_eq!(image_bounds.0 * image_bounds.1, 1024 * 768);
-    
+
     let o = Onesuch;
+
+    let mut q = Queue {
+        older: Vec::new(),
+        younger: Vec::new(),
+    };
+    q.push('0');
+    q.push('1');
+    assert_eq!(q.pop(), Some('0'));
+
+    q.push('x');
+    assert_eq!(q.pop(), Some('1'));
+    assert_eq!(q.pop(), Some('x'));
+    assert_eq!(q.pop(), None);
+    assert!(q.is_empty());
+    {
+        let mut q = Queue {
+            older: Vec::new(),
+            younger: Vec::new()
+        };
+        
+        q.push('P');
+        q.push('D');
+        assert_eq!(q.pop(), Some('P'));
+        q.push('X');
+        
+        let (older, younger) = q.split();
+        // println!("{}", q.is_empty());
+        // q cannot be used since it has been moved
+        assert_eq!(older, vec!['D']);
+        assert_eq!(younger, vec!['X']);
+    }
 }
