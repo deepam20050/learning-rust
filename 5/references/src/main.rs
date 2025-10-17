@@ -31,6 +31,16 @@ fn f(p: &'static i32) {
     }
 }
 
+fn smallest<'a>(v: &'a[i32]) -> &'a i32 {
+    let mut s = &v[0];
+    for r in &v[1..] {
+        if *r < *s {
+            s = r;
+        }
+    }
+    s
+}
+
 fn main() {
     f(&WORTH_POINTING_AT);
     unsafe {
