@@ -22,23 +22,48 @@ struct Anime {
     bechdel_pass: bool,
 }
 
+static mut STASH: &i32 = &10;
+static WORTH_POINTING_AT: i32 = 1123;
+
+fn f(p: &'static i32) {
+    unsafe {
+        STASH = p;
+    }
+}
+
 fn main() {
+    f(&WORTH_POINTING_AT);
+    unsafe {
+        assert_eq!(*STASH, 1123);
+    }
     let mut table = Table::new();
-    table.insert("Gesualdo".to_string(),
-                vec!["many madrigals".to_string(),
-                "Tenebrae Responsoria".to_string()]);
-    table.insert("Caravaggio".to_string(),
-                vec!["The Musicians".to_string(),
-                "The Calling of St. Matthew".to_string()]);
-    table.insert("Cellini".to_string(),
-                    vec!["Perseus with the head of Medusa".to_string(),
-                    "a salt cellar".to_string()]);
+    table.insert(
+        "Gesualdo".to_string(),
+        vec![
+            "many madrigals".to_string(),
+            "Tenebrae Responsoria".to_string(),
+        ],
+    );
+    table.insert(
+        "Caravaggio".to_string(),
+        vec![
+            "The Musicians".to_string(),
+            "The Calling of St. Matthew".to_string(),
+        ],
+    );
+    table.insert(
+        "Cellini".to_string(),
+        vec![
+            "Perseus with the head of Medusa".to_string(),
+            "a salt cellar".to_string(),
+        ],
+    );
 
     show(&table);
     /*
-        after caling show(table), show() takes the ownership
-        of table and so table is destroyed;
-     */
+       after caling show(table), show() takes the ownership
+       of table and so table is destroyed;
+    */
 
     assert_eq!(table["Gesualdo"][0], "many madrigals");
 
@@ -48,11 +73,9 @@ fn main() {
 
     show(&table);
 
-
     let x = 10;
     let r = &x;
     assert!(*r == 10); // explicilty dereference r
-    
 
     let mut y = 32;
     let m = &mut y;
@@ -60,10 +83,9 @@ fn main() {
     assert!(*m == 64);
     assert!(y == 64);
 
-
     let aria = Anime {
         name: "Aria: The Animation",
-        bechdel_pass: true
+        bechdel_pass: true,
     };
 
     let anime_ref = &aria;
@@ -74,7 +96,7 @@ fn main() {
 
     let mut v = vec![1973, 1968];
     v.sort();
-    (& mut v).sort();
+    (&mut v).sort();
 
     {
         let x = 10;
@@ -95,7 +117,7 @@ fn main() {
             y: i32,
         }
 
-        let point = Point {x: 1000, y: 729};
+        let point = Point { x: 1000, y: 729 };
         let r: &Point = &point;
         let rr = &r;
         let rrr = &rr;
@@ -113,9 +135,9 @@ fn main() {
 
         let rx = &x;
         let ry = &y;
-        
+
         let rrx = &rx;
-        let rry  = &ry;
+        let rry = &ry;
 
         assert!(rrx <= rry);
         assert!(rrx == rry);
@@ -136,7 +158,7 @@ fn main() {
         // borrowing references to arbitary expressions
 
         fn factorial(n: usize) -> usize {
-            (1..n+1).product()
+            (1..n + 1).product()
         }
 
         let r = &factorial(6);
